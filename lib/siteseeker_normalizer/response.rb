@@ -1,0 +1,86 @@
+# -*- coding: utf-8 -*-
+module SiteseekerNormalizer
+  class Response
+    def initialize(raw_response)
+      @doc = Nokogiri::HTML(raw_response, nil, "UTF-8")
+      @doc = @doc.xpath("/html/body")
+      clean_up
+    end
+
+    def sorting
+      @doc.css('div.ess-sortlinks').xpath("a | span[@class='ess-current']").map do |sort_by|
+        next if sort_by.text.downcase.strip == "kategori"
+        OpenStruct.new(
+          text: sort_by.text.strip,
+          query: URI::parse(sort_by.xpath("@href").text).query,
+          current: sort_by.xpath("@href").empty?
+        )
+      end.compact
+    end
+
+    def total
+      @doc.css('#essi-hitcount').text.to_i
+    end
+
+    def more_query
+      URI::parse(@doc.xpath("//*[@class='ess-respages']/*[@class='ess-next']/@href").text).query
+    end
+
+    def editors_choice
+      @doc.xpath("//*[@class='ess-bestbets']").map do |ec|
+        OpenStruct.new(
+          text: ec.xpath("dt/a").text,
+          url: ec.xpath("dt/a/@href").text,
+          summary: ec.xpath("dd").text
+        )
+      end
+    end
+
+    def suggestions
+      @doc.css(".ess-spelling a").map do |suggestion|
+        OpenStruct.new(text: suggestion.text, url: rewrite_query(suggestion.xpath("@href").text))
+      end
+    end
+
+    def entries
+      @doc.css("dl.ess-hits dt").map do |entry|
+        next unless entry.css('a').present?
+        Entry.new(entry)
+      end.compact
+    end
+
+    def category_groups
+      @doc.css("[id^=essi-bd-cg-]").map do |category_group|
+        OpenStruct.new(
+          title: category_group.css(".ess-cat-bd-heading").text.strip.gsub(/:$/, ""),
+          categories: category_group.css(".ess-cat-bd-category").map { |entry| Category.new(entry) }
+        )
+      end
+    end
+
+    def category_all
+      all = @doc.css("p.ess-cat-bd-all")
+      OpenStruct.new(
+        title: all.css("strong").text,
+        query: rewrite_query(all.xpath("strong/a/@href").text),
+        hits: all.css(".ess-num").text.strip,
+        current?: !!all.xpath("@class").text.match("ess-current")
+      )
+    end
+
+    private
+      def rewrite_query(url)
+        URI::parse(url).query
+      end
+
+      # Cleanup some crap
+      def clean_up
+        @doc.css(".ess-separator").remove
+        @doc.css("@title").remove
+        @doc.css("@onclick").remove
+        @doc.css("@tabindex").remove
+        @doc.css(".ess-label-hits").remove
+        @doc.css(".ess-clear").remove
+      end
+  end
+end
