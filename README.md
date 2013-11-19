@@ -1,6 +1,6 @@
 # SiteseekerNormalizer
 
-TODO: Write a gem description
+Siteseeker integration Ruby gem. Perform a search request and parse the response into a Ruby object.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-Siteseeker integration Ruby gem. Perform a search request and parse the response into a Ruby object.
+TODO: write spec
 
 ## Contributing
 
