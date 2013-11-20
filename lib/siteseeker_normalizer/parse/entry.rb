@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 module SiteseekerNormalizer
-  class Response
+  class Parse
     class Entry
       def initialize(entry)
         @entry = entry

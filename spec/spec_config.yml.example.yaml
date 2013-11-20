@@ -1,4 +1,2 @@
-urls:
-  valid: "http://ACCOUNT_NAME.appliance.siteseeker.se/search/INDEX_NAME/"
-  invalid_account: "http://invalid_account_name.appliance.siteseeker.se/search/INDEX_NAME"
-  invalid_index: "http://ACCOUNT_NAME.appliance.siteseeker.se/search/invalid_index_name"
+account_name: "YOUR_ACCOUNT_NAME"
+index: "THE_INDEX_NAME"

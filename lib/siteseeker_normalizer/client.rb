@@ -4,12 +4,11 @@ require 'uri'
 
 module SiteseekerNormalizer
   class Client
-    def initialize(siteseeker_url, options={})
-      @base_search_url = "#{siteseeker_url}?oenc=UTF-8&"
-      @options = { read_timeout: 5 }.merge(options)
+    def initialize(account, index, options={})
+      @options = { read_timeout: 5, encoding: "UTF-8" }.merge(options)
+      @base_search_url = "http://#{account}.appliance.siteseeker.se/search/#{index}/?oenc=#{@options[:encoding]}"
     end
 
-    # Send a GET request to the Siteseeker server and create a Nokogiri doc from the returned HTML
     def search(query)
       if query.is_a? Hash
         query = URI.encode_www_form(query)
@@ -17,8 +16,8 @@ module SiteseekerNormalizer
         query = "q=#{query}"
       end
 
-      html = open("#{@base_search_url}#{query}", read_timeout: @options[:read_timeout]).read
-      Response.new(html)
+      html = open("#{@base_search_url}&#{query}", read_timeout: @options[:read_timeout]).read
+      Parse.new(html, @options['encoding'])
     end
   end
 end

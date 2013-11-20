@@ -4,20 +4,8 @@ require 'nokogiri'
 
 describe SiteseekerNormalizer do
   before(:each) do
-    @client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["valid"])
+    @client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["account"], SPEC_CONFIG["index"])
     @response = @client.search("barn")
-  end
-
-  it "should have sorting" do
-    @response.sorting.should be_an Array
-  end
-
-  it "should have a first sorting entry with text" do
-    @response.sorting.first.text.should be_a String
-  end
-
-  it "should have a second sorting entry with an url" do
-    @response.sorting[1].query.should be_a String
   end
 
   it "should have a number of hits" do
@@ -54,6 +42,18 @@ describe SiteseekerNormalizer do
     end
   end
 
+  it "should have sorting" do
+    @response.sorting.should be_an Array
+  end
+
+  it "should have a first sorting entry with text" do
+    @response.sorting.first.text.should be_a String
+  end
+
+  it "should have a second sorting entry with an url" do
+    @response.sorting[1].query.should be_a String
+  end
+
   it "should have a query string for getting more results" do
     @response.more_query.should be_a String
   end
@@ -81,21 +81,21 @@ describe SiteseekerNormalizer do
 
   it "should raise an error for an invalid account name" do
     expect {
-      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["invalid_account"])
+      client = SiteseekerNormalizer::Client.new("x", SPEC_CONFIG["index"])
       response = client.search("y")
     }.to raise_error(SocketError)
   end
 
   it "should raise an error for an invalid index name" do
     expect {
-      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["invalid_index"])
+      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["account"], "foo")
       response = client.search("y")
     }.to raise_error(OpenURI::HTTPError)
   end
 
   it "should raise a timeout error" do
     expect {
-      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["valid"], read_timeout: 0.01)
+      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["account"], SPEC_CONFIG["index"], read_timeout: 0.01)
       response = client.search("y")
     }.to raise_error(Timeout::Error)
   end
