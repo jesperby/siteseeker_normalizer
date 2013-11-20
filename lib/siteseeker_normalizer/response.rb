@@ -1,10 +1,38 @@
 # -*- coding: utf-8 -*-
+require 'ostruct'
+
 module SiteseekerNormalizer
   class Response
     def initialize(raw_response)
       @doc = Nokogiri::HTML(raw_response, nil, "UTF-8")
-      @doc = @doc.xpath("/html/body")
       clean_up
+      @doc = @doc.xpath("/html/body")
+    end
+
+    def entries
+      @doc.css("dl.ess-hits dt").map do |entry|
+        next if entry.css('a').nil?
+        Entry.new(entry)
+      end.compact
+    end
+
+    def category_groups
+      @doc.css("[id^=essi-bd-cg-]").map do |category_group|
+        OpenStruct.new(
+          title: category_group.css(".ess-cat-bd-heading").text.strip.gsub(/:$/, ""),
+          categories: category_group.css(".ess-cat-bd-category").map { |entry| Category.new(entry) }
+        )
+      end
+    end
+
+    def category_all
+      all = @doc.css("p.ess-cat-bd-all")
+      OpenStruct.new(
+        title: all.css("strong").text,
+        query: rewrite_query(all.xpath("strong/a/@href").text),
+        hits: all.css(".ess-num").text.strip,
+        current?: !!all.xpath("@class").text.match("ess-current")
+      )
     end
 
     def sorting
@@ -40,32 +68,6 @@ module SiteseekerNormalizer
       @doc.css(".ess-spelling a").map do |suggestion|
         OpenStruct.new(text: suggestion.text, url: rewrite_query(suggestion.xpath("@href").text))
       end
-    end
-
-    def entries
-      @doc.css("dl.ess-hits dt").map do |entry|
-        next unless entry.css('a').present?
-        Entry.new(entry)
-      end.compact
-    end
-
-    def category_groups
-      @doc.css("[id^=essi-bd-cg-]").map do |category_group|
-        OpenStruct.new(
-          title: category_group.css(".ess-cat-bd-heading").text.strip.gsub(/:$/, ""),
-          categories: category_group.css(".ess-cat-bd-category").map { |entry| Category.new(entry) }
-        )
-      end
-    end
-
-    def category_all
-      all = @doc.css("p.ess-cat-bd-all")
-      OpenStruct.new(
-        title: all.css("strong").text,
-        query: rewrite_query(all.xpath("strong/a/@href").text),
-        hits: all.css(".ess-num").text.strip,
-        current?: !!all.xpath("@class").text.match("ess-current")
-      )
     end
 
     private

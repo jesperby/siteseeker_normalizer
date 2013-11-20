@@ -11,3 +11,4 @@ pkg
 rdoc
 spec/reports
 tmp
+spec_config.yml

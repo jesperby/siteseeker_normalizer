@@ -1,74 +1,102 @@
 # -*- coding: utf-8 -*-
 require 'spec_helper'
 require 'nokogiri'
-require 'uri'
 
 describe SiteseekerNormalizer do
   before(:each) do
-    terms = { q: "semester" }
-    @results = SiteseekerNormalizer.new(URI.encode_www_form(terms))
+    @client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["valid"])
+    @response = @client.search("barn")
   end
 
   it "should have sorting" do
-    @results.sorting.should be_present
+    @response.sorting.should be_an Array
   end
 
   it "should have a first sorting entry with text" do
-    @results.sorting.first.text.should be_present
+    @response.sorting.first.text.should be_a String
   end
 
   it "should have a second sorting entry with an url" do
-    @results.sorting[1].query.should be_present
-  end
-
-  it "should not have an error message" do
-    @results.error.should be nil
+    @response.sorting[1].query.should be_a String
   end
 
   it "should have a number of hits" do
-    @results.total.class.should be Fixnum
+    @response.total.should be_a Fixnum
   end
 
   it "should have results" do
-    @results.entries.count.should > 0
+    @response.entries.count.should > 0
   end
 
   describe "result entry" do
     it "should have an order number" do
-      @results.entries.first.number.should eq 1
+      @response.entries.first.number.should eq 1
     end
 
     it "should have a title" do
-      @results.entries.first.title.class.should be String
+      @response.entries.first.title.should be_a String
     end
 
     it "should have an extract" do
-      @results.entries.first.summary.should be_present
+      @response.entries.first.summary.should be_a String
     end
 
     it "should have a breadcrumb" do
-      @results.entries.first.breadcrumbs.class.should be_present
+      @response.entries.first.breadcrumbs.should be_an Array
     end
 
     it "should have a category" do
-      @results.entries.first.category.class.should be String
+      @response.entries.first.category.should be_a String
     end
 
     it "should have a date string" do
-      @results.entries.first.date.should be_present
+      @response.entries.first.date.should be_a String
     end
   end
 
   it "should have a query string for getting more results" do
-    @results.more_query.should be_present
+    @response.more_query.should be_a String
   end
 
   it "should have a categories" do
-    @results.category_groups.class.should be Array
+    @response.category_groups.should be_an Array
+  end
+
+  it "should also take an array as a search argument" do
+    response = @client.search({q: "barn"})
+    response.total.should > 0
   end
 
   it "should show a spelling suggestions" do
-    results = SiteseekerNormalizer.new((URI.encode_www_form({ q: "semstr" })))
-    results.suggestions.count.should > 0
+    response = @client.search("barnomsrg")
+    response.suggestions.count.should > 0
+  end
+
+  it "should raise an error for an invalid search url" do
+    expect {
+      client = SiteseekerNormalizer::Client.new("x")
+      response = client.search("y")
+    }.to raise_error
+  end
+
+  it "should raise an error for an invalid account name" do
+    expect {
+      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["invalid_account"])
+      response = client.search("y")
+    }.to raise_error(SocketError)
+  end
+
+  it "should raise an error for an invalid index name" do
+    expect {
+      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["invalid_index"])
+      response = client.search("y")
+    }.to raise_error(OpenURI::HTTPError)
+  end
+
+  it "should raise a timeout error" do
+    expect {
+      client = SiteseekerNormalizer::Client.new(SPEC_CONFIG["urls"]["valid"], read_timeout: 0.01)
+      response = client.search("y")
+    }.to raise_error(Timeout::Error)
   end
 end
