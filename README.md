@@ -1,6 +1,6 @@
 # SiteseekerNormalizer
 
-Siteseeker integration Ruby gem. Perform a search request and parse the response into a Ruby object.
+A Ruby Gem for making requests and parsing the response from Siteseeker to a structured object.
 
 ## Installation
 

@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SiteseekerNormalizer::VERSION
   spec.authors       = ["martent"]
   spec.email         = ["marten@thavenius.se"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Siteseeker integration library}
+  spec.summary       = %q{A Ruby Gem for making requests and parsing the response from Siteseeker to a structured object.}
   spec.homepage      = "https://github.com/malmostad/siteseeker_normalizer"
   spec.license       = "AGPL v3"
 
