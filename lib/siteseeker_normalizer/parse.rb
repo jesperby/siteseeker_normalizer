@@ -3,8 +3,9 @@ require 'ostruct'
 
 module SiteseekerNormalizer
   class Parse
-    def initialize(raw_response, encoding)
-      @doc = Nokogiri::HTML(raw_response, nil, encoding)
+    def initialize(raw_response, options={})
+      @options = { encoding: "UTF-8" }.merge(options)
+      @doc = Nokogiri::HTML(raw_response, nil, @options[:encoding])
       clean_up
       @doc = @doc.xpath("/html/body")
     end

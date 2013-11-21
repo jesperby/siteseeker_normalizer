@@ -10,14 +10,17 @@ module SiteseekerNormalizer
     end
 
     def search(query)
+      raw_response = fetch(query)
+      Parse.new(raw_response, encoding: @options[:encoding])
+    end
+
+    def fetch(query)
       if query.is_a? Hash
         query = URI.encode_www_form(query)
       else
         query = "q=#{query}"
       end
-
-      html = open("#{@base_search_url}&#{query}", read_timeout: @options[:read_timeout]).read
-      Parse.new(html, @options[:encoding])
+      open("#{@base_search_url}&#{query}", read_timeout: @options[:read_timeout]).read
     end
   end
 end
