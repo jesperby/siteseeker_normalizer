@@ -17,7 +17,7 @@ module SiteseekerNormalizer
       end
 
       html = open("#{@base_search_url}&#{query}", read_timeout: @options[:read_timeout]).read
-      Parse.new(html, @options['encoding'])
+      Parse.new(html, @options[:encoding])
     end
   end
 end
