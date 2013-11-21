@@ -1,6 +1,9 @@
-# SiteseekerNormalizer
+# Siteseeker Normalizer
 
-A Ruby Gem for making requests and parsing the response from Siteseeker to a structured object.
+Ruby gem for Siteseeker integration. Performs requests and parses the response from Siteseeker. Search results is available as a structured object ready to use in Rails templates or another Ruby context.
+
+## Requirements
+Ruby 1.9.3 or 2.0.
 
 ## Installation
 
@@ -28,3 +31,6 @@ TODO: write spec
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create new Pull Request
+
+## License
+Released under AGPL version 3.
