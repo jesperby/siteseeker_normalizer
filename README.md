@@ -3,7 +3,8 @@
 Ruby gem for Siteseeker integration. Performs requests and parses the response from Siteseeker. Search results is available as a structured object ready to use in Rails templates or another Ruby context.
 
 ## Requirements
-Ruby 1.9.3 or 2.0.
+* Ruby 1.9.3 or 2.0.
+* A [Siteseeker](http://www.siteseeker.se/) account.
 
 ## Installation
 
@@ -22,6 +23,11 @@ Or install it yourself as:
 ## Usage
 
 TODO: write spec
+
+## Testing
+Copy `spec/spec_config.yml.example` to `spec/spec_config.yml` and fill in your Siteseeker account name and the search index name in the file. Execute:
+
+    rspec
 
 ## Contributing
 
