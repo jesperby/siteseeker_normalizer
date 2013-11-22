@@ -20,12 +20,16 @@ Or install it yourself as:
 
     $ gem install siteseeker_normalizer
 
+If you get an error message about Nokogiri, install it with `sudo` first:
+
+    $ sudo gem install nokogiri
+
 ## Usage
 
 TODO: write spec
 
 ## Testing
-Copy `spec/spec_config.yml.example` to `spec/spec_config.yml` and fill in your Siteseeker account name and the search index name in the file. Execute:
+Copy `spec/spec_config.yml.example` to `spec/spec_config.yml` and fill in your Siteseeker account name and the search index name in the file. Apart from testing the module itself, the test cases are testing the strucuture of Siteseekers response as well since this is the weak point here. Execute:
 
     rspec
 
