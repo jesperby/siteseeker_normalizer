@@ -56,11 +56,11 @@ module SiteseekerNormalizer
     end
 
     def editors_choice
-      @doc.xpath("//*[@class='ess-bestbets']").map do |ec|
+      @doc.xpath("//*[@class='ess-bestbets']/dt").map do |ec|
         OpenStruct.new(
-          text: ec.xpath("dt/a").text,
-          url: ec.xpath("dt/a/@href").text,
-          summary: ec.xpath("dd").text
+          text: ec.xpath("a").text,
+          url: ec.xpath("a/@href").text,
+          summary: ec.xpath("following-sibling::dd[1]").text
         )
       end
     end
