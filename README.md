@@ -1,5 +1,8 @@
 # Siteseeker Normalizer
 
+[![Gem Version](https://badge.fury.io/rb/siteseeker_normalizer.png)](http://badge.fury.io/rb/siteseeker_normalizer)
+
+
 Ruby gem for Siteseeker integration. Performs requests and parses the response from Siteseeker. Search results is available as a structured object ready to use in Rails templates or another Ruby context.
 
 ## Requirements
