@@ -25,10 +25,6 @@ Or install it yourself as:
 
     $ gem install siteseeker_normalizer
 
-If you get an error message about Nokogiri, install it with `sudo` first:
-
-    $ sudo gem install nokogiri
-
 ## Usage
 
 TODO: write spec
