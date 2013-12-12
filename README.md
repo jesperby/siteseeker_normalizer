@@ -2,7 +2,10 @@
 
 [![Build Status](https://travis-ci.org/malmostad/siteseeker_normalizer.png)](https://travis-ci.org/malmostad/siteseeker_normalizer) [![Dependency Status](https://gemnasium.com/malmostad/siteseeker_normalizer.png)](https://gemnasium.com/malmostad/siteseeker_normalizer) [![Gem Version](https://badge.fury.io/rb/siteseeker_normalizer.png)](http://badge.fury.io/rb/siteseeker_normalizer)
 
-Ruby gem for Siteseeker integration. Performs requests and parses the response from Siteseeker. Search results is available as a structured object ready to use in Rails templates or another Ruby context.
+Ruby gem for Siteseeker integration. Performs requests and parses the response from Siteseeker. Search results is available as a structured object.
+
+## Example Usages
+Check out the the Rails app [Intranet Dashboard](https://github.com/malmostad/intranet-dashboard) in the `site_search` controller and views or the Sinatra app [Sitesearch](https://github.com/malmostad/sitesearch).
 
 ## Requirements
 * Ruby 1.9.3, 2.0.0 or 2.1.0.
