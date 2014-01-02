@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
+require 'nokogiri'
 require 'uri'
 
 module SiteseekerNormalizer
@@ -18,7 +19,7 @@ module SiteseekerNormalizer
       if query.is_a? Hash
         query = URI.encode_www_form(query)
       else
-        query = "q=#{query}"
+        query = "q=#{URI.encode_www_form_component(query)}"
       end
       open("#{@base_search_url}&#{query}", read_timeout: @options[:read_timeout]).read
     end
