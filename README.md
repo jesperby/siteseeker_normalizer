@@ -23,7 +23,9 @@ Or install it yourself as:
     $ gem install siteseeker_normalizer
 
 ## Usage
-Check out the the Rails app [Intranet Dashboard](https://github.com/malmostad/intranet-dashboard) in the `site_search` controller and views or the standalone Sinatra search app [Sitesearch](https://github.com/malmostad/sitesearch). Both are using memcached wrappers for the fetched search results.
+Check out the [Intranet Dashboard](https://github.com/malmostad/intranet-dashboard) Rails app in the `site_search` controller and views or the Sinatra search app [Sitesearch](https://github.com/malmostad/sitesearch). Both are using memcached wrappers for the fetched search results.
+
+Plain Ruby usage:
 
 ```Ruby
 require 'siteseeker_normalizer'
