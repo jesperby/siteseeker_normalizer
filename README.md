@@ -28,16 +28,17 @@ Check out the the Rails app [Intranet Dashboard](https://github.com/malmostad/in
 ```Ruby
 require 'siteseeker_normalizer'
 
-# Initialize a search client with your account name and a search index name
+# Initialize a search client with your account name and a search index name.
 client = SiteseekerNormalizer::Client.new("account_name", "index_name")
 
-# Search query with a search string
+# Search query with a search string.
 results = client.search("parkering")
 
-# Search query with a Hash of parameters, used for paging, category search etc.
+# Search query with a Hash of parameters
+# Used for category filtering, load more results etc. where the query comes from a previous result.
 results = client.search(params)
 
-# You can fetch the results first and then parse. Usefull for caching the response before parsing.
+# Fetch the results first and then parse. Useful for caching the response before parsing.
 raw_results = client.fetch("parkering")
 raw_results = client.fetch(params)
 results = SiteseekerNormalizer::Parse.new(raw_results)
@@ -60,7 +61,7 @@ results.sorting.first.text         # => "Relevans"
 results.sorting.first.query        # => "q=parkering&t=simple&ls=2&d=0&d1=01&d2 ..."
 results.sorting.first.current      # => false
 
-# Query with more results for load more results
+# Query for loading more results
 results.more_query                 # => "q=parkering&t=simple&ls=2&d=0&d1=01&d2 ..."
 
 # Array with categories for the results, used for filtering
