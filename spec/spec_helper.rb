@@ -1,2 +1,1 @@
-require "siteseeker_normalizer"
-require 'nokogiri'
+require 'siteseeker_normalizer'
