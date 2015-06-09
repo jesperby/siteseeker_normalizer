@@ -31,7 +31,7 @@ module SiteseekerNormalizer
       end
 
       def breadcrumbs
-        @entry.xpath("following-sibling::dd[1]/div[@class='ess-special']/ul/li[a]").map do |item|
+        @entry.xpath("following-sibling::dd[1]/div[@class='ess-special']/*/li[a]").map do |item|
           OpenStruct.new(text: item.css("a").text.strip, url: item.css("a/@href").text)
         end
       end
